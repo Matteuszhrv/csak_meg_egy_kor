@@ -1,83 +1,93 @@
-using UnityEngine;
-
-
+﻿using UnityEngine;
 
 public class LudoBoard : MonoBehaviour
-
 {
-
-    // This script holds the lists of all field positions so figures know where to walk.
-
-
-
-    [Header("Main Track")]
-
-    // Drag your 52 main fields here (Field_00 to Field_51)
-
+    [Header("Main Track (52 mező)")]
     public Transform[] mainTrack;
 
-
-
     [Header("Victory Paths (Homes)")]
-
-    public Transform[] redHome;    // 5 fields
-
-    public Transform[] blueHome;   // 5 fields
-
-    public Transform[] greenHome;  // 5 fields
-
-    public Transform[] yellowHome; // 5 fields
-
-
+    public Transform[] redHome;    // 5 mező
+    public Transform[] blueHome;   // 5 mező
+    public Transform[] greenHome;  // 5 mező
+    public Transform[] yellowHome; // 5 mező
 
     [Header("Spawn Points (Bases)")]
-
-    public Transform[] redBase;    // 4 fields
-
-    public Transform[] blueBase;   // 4 fields
-
-    public Transform[] greenBase;  // 4 fields
-
-    public Transform[] yellowBase; // 4 fields
-
-
+    public Transform[] redBase;    // 4 mező
+    public Transform[] blueBase;   // 4 mező
+    public Transform[] greenBase;  // 4 mező
+    public Transform[] yellowBase; // 4 mező
 
     [Header("Finish")]
-
     public Transform redFinish;
-
     public Transform blueFinish;
-
     public Transform greenFinish;
-
     public Transform yellowFinish;
 
-    public Transform GetSpawnForColor(Figure.TeamColor color)
+    [Header("Game Status")]
+    public bool gameOver = false;
+    public Figure.TeamColor? winner = null;
+
+    // ---------------- Segédfüggvények ----------------
+
+    // Visszaadja a színhez tartozó finish mezőt
+    public Transform GetFinishField(Figure.TeamColor color)
     {
         switch (color)
         {
-            case Figure.TeamColor.Blue: return blueBase[0];
-            case Figure.TeamColor.Red: return redBase[0];
-            case Figure.TeamColor.Green: return greenBase[0];
-            case Figure.TeamColor.Yellow: return yellowBase[0];
+            case Figure.TeamColor.Blue: return blueFinish;
+            case Figure.TeamColor.Red: return redFinish;
+            case Figure.TeamColor.Green: return greenFinish;
+            case Figure.TeamColor.Yellow: return yellowFinish;
         }
         return null;
     }
-    public Transform GetExactSpawn(Figure fig)
+
+    // Visszaadja a színhez tartozó home path mezőket
+    public Transform[] GetHomePath(Figure.TeamColor color)
     {
-        switch (fig.teamColor)
+        switch (color)
         {
-            case Figure.TeamColor.Blue:
-                return blueBase[fig.spawnIndex];
-            case Figure.TeamColor.Red:
-                return redBase[fig.spawnIndex];
-            case Figure.TeamColor.Green:
-                return greenBase[fig.spawnIndex];
-            case Figure.TeamColor.Yellow:
-                return yellowBase[fig.spawnIndex];
+            case Figure.TeamColor.Blue: return blueHome;
+            case Figure.TeamColor.Red: return redHome;
+            case Figure.TeamColor.Green: return greenHome;
+            case Figure.TeamColor.Yellow: return yellowHome;
         }
         return null;
     }
 
+    // Visszaadja az adott figura spawn mezőjét
+    public Transform GetExactSpawn(Figure figure)
+    {
+        switch (figure.teamColor)
+        {
+            case Figure.TeamColor.Blue: return blueBase[figure.spawnIndex];
+            case Figure.TeamColor.Red: return redBase[figure.spawnIndex];
+            case Figure.TeamColor.Green: return greenBase[figure.spawnIndex];
+            case Figure.TeamColor.Yellow: return yellowBase[figure.spawnIndex];
+        }
+        return null;
+    }
 
+    // Visszaadja a szín első main track mezőjét (a bázistól indulás indexe)
+    public Transform GetFirstBaseField(Figure.TeamColor color)
+    {
+        switch (color)
+        {
+            case Figure.TeamColor.Blue: return mainTrack[0];
+            case Figure.TeamColor.Red: return mainTrack[13];
+            case Figure.TeamColor.Green: return mainTrack[26];
+            case Figure.TeamColor.Yellow: return mainTrack[39];
+        }
+        return null;
+    }
+
+    // ---------------- Győztes hirdetés ----------------
+    public void DeclareWinner(Figure.TeamColor color)
+    {
+        if (gameOver) return;
+
+        gameOver = true;
+        winner = color;
+        Debug.Log("🏆 GYŐZTES: " + color + " !");
+    }
 }
