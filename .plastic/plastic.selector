@@ -1,0 +1,4 @@
+repository "Ki nevet a végén - Csapatok harca/Ki nevet a végén - Csapatok harca@7972513002098@cloud"
+  path "/"
+    br "/main"
+    co "/main"
