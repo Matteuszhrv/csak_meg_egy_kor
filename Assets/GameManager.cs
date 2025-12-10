@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
         int stepsDone = (currentIndex - startIndex + N) % N;
         int newTotal = stepsDone + steps;
 
-        if (newTotal < N)
+        if (newTotal < N-1)
         {
             int newIndex = (startIndex + newTotal) % N;
             activeFigure.MoveToField(board.mainTrack[newIndex].GetComponent<FieldMarker>());

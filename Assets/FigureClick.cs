@@ -17,7 +17,7 @@ public class FigureClick : MonoBehaviour, IPointerDownHandler
         {
             Debug.LogError("FigureClick nem találja a GameManager-t a jelenetben!");
         }
-        Debug.LogError("Elindul?");
+        
     }
 
     public void OnPointerDown(PointerEventData EventData)
